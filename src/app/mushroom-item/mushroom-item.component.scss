@@ -1,0 +1,16 @@
+:host {
+ width: 100px; 
+
+}
+
+mat-card {
+    width: 240px;
+    &:hover {
+        opacity: 0.9;
+ }
+}
+
+img {
+    height: 300px;
+    object-fit: cover;
+}

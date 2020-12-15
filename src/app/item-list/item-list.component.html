@@ -1,1 +1,5 @@
-<p>item-list works!</p>
+<div class="mushroom-items">
+    <div class="mushroom-item" *ngFor="let item of mushrooms$ | async; index as i">
+        <app-mushroom-item [mushroomData]="item"></app-mushroom-item>
+    </div>
+</div>

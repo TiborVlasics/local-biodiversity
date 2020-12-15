@@ -1,2 +1,10 @@
-<h1>Hello world</h1>
-<app-item-list></app-item-list>
+<mat-toolbar>
+  <span>Mushroom repository</span>
+  <button mat-raised-button color="primary" (click)="onAddClick()">Add new mushroom</button>
+</mat-toolbar>
+<div class="container">
+  <div class="mushroom-list">
+    <h1>List of mushrooms found:</h1>
+    <app-item-list></app-item-list>
+  </div>
+</div>

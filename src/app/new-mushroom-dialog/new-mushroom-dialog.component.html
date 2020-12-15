@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Add new mushroom</h2>
+<mat-dialog-content class="example-container">
+    <form class="app-form" [formGroup]="mushroomForm" (submit)="onSubmit()">
+        <mat-form-field appearance="fill">
+            <input formControlName="name" matInput placeholder="Simple placeholder" required>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <input formControlName="nickname" matInput placeholder="Simple placeholder" required>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button mat-dialog-close>Cancel</button>
+    <button color="primary" mat-stroked-button cdkFocusInitial (click)="onSubmit()">Submit</button>
+</mat-dialog-actions>
