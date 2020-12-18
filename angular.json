@@ -129,5 +129,8 @@
       }
     }
   },
-  "defaultProject": "mushroom-repository"
+  "defaultProject": "mushroom-repository",
+  "cli": {
+    "analytics": false
+  }
 }

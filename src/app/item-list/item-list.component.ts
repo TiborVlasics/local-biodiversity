@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { MushroomDataService } from '../mushroom-data.service';
+import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
   selector: 'app-item-list',
@@ -12,12 +11,11 @@ export class ItemListComponent implements OnInit {
 
   mushrooms$!: Observable<any>;
 
-  constructor(private service: MushroomDataService) {
-  }
+  constructor(private service: MushroomDataService) {}
 
   ngOnInit(): void {
-    this.mushrooms$ = this.service.getMushroomList$().pipe(
-      tap(a => console.log(a)));
+    this.mushrooms$ = this.service.getMushroomList$();
+    this.service.fetchMushroomList$().subscribe();
   }
 
 }

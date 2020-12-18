@@ -31,7 +31,7 @@ export class AppComponent {
       if (result.matches) {
         dialogRef.updateSize('100%', '100%');
       } else {
-        dialogRef.updateSize('50%', '500px');
+        dialogRef.updateSize('50%', '85%');
       }
     });
 

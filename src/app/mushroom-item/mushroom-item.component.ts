@@ -14,7 +14,7 @@ export class MushroomItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.imgSrc = this.mushroomData.assetUrl ? `/assets/${this.mushroomData.assetUrl}` : this.defaultSrc;
+    this.imgSrc = this.mushroomData.asseturl ? this.mushroomData.asseturl : this.defaultSrc;
   }
 
 }
