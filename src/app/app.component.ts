@@ -2,7 +2,6 @@ import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/l
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { NewMushroomDialogComponent } from './new-mushroom-dialog/new-mushroom-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -19,25 +18,5 @@ export class AppComponent {
     private dialog: MatDialog
   ) { }
 
-  onAddClick() {
-    const dialogRef = this.dialog.open(NewMushroomDialogComponent, {
-      width: '50%',
-      height: '50%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-    });
-
-    const smallDialogSubscription = this.isExtraSmall.subscribe(result => {
-      if (result.matches) {
-        dialogRef.updateSize('100%', '100%');
-      } else {
-        dialogRef.updateSize('50%', '85%');
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      smallDialogSubscription.unsubscribe();
-    });
-  }
 }
 
