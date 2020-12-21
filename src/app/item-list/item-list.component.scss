@@ -1,9 +1,32 @@
-.mushroom-items {
+.observation-items {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.mushroom-item {
+.observation-item {
+    display: flex;
     margin: 8px;
-    // max-height: 100px;
+    margin-bottom: 24px;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+    img {
+        object-fit: contain;
+        border-radius: 3px;
+    }
+}
+
+.observation-details {
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: baseline;
+    padding: 8px;
+
+    * {
+        margin: 0;
+    }
 }

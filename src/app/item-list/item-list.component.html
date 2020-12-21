@@ -1,5 +1,14 @@
-<div class="mushroom-items">
-    <div class="mushroom-item" *ngFor="let item of mushrooms$ | async; index as i">
-        <app-mushroom-item [mushroomData]="item"></app-mushroom-item>
+
+<h1 class="mat-h2">Legutóbbi megfigyelések</h1>
+<div class="observation-items">
+    <div class="observation-item" *ngFor="let item of observations$ | async; index as i">
+        <img class="observation-img" src="{{ item.photos[0].url }}">
+        <div class="observation-details mat-typography">
+            <p class="mat-body">
+                <span class="mat-body-strong">{{ item.user.name ? item.user.name : 'Ismeretlen felhasználó' }}</span> bejegyzett egy új 
+                <span class="mat-body-strong">{{ item.taxon.name }}</span> egyedet {{ item.place_guess }}!</p>
+            <a class="mat-body" href="{{ item.uri }}">{{ item.uri }}</a>
+            <p class="mat-small"><i>{{ item.created_at | date }}</i></p>
+        </div>
     </div>
 </div>

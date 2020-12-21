@@ -1,7 +1,11 @@
 .container {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     margin: 16px;
+}
+
+mat-toolbar {
+    justify-content: space-around;
 }
 
 .mushroom-list {

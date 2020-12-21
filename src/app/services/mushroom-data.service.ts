@@ -11,8 +11,13 @@ export class MushroomDataService {
   private mushroomList: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   private apiUrl = "http://localhost:3000/api/mushroom";
+  private iNaturalistRootApiUrl = "https://api.inaturalist.org/v1/observations";
 
   constructor(private http: HttpClient) {
+  }
+
+  public getObservationList(lat: number, lng: number, radius: number) {
+    return this.http.get(`${this.iNaturalistRootApiUrl}/?lat=${lat}&lng=${lng}&radius=${radius}&order=desc&order_by=created_at`)
   }
 
   public fetchMushroomList$(): Observable<any> {
