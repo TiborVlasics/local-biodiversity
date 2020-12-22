@@ -7,6 +7,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MushroomDataService {
+  private readonly center: {lat: number, lng: number } = { lat: 46.421745, lng: 16.802555 };
 
   private mushroomList: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
@@ -18,6 +19,10 @@ export class MushroomDataService {
 
   public getObservationList(lat: number, lng: number, radius: number) {
     return this.http.get(`${this.iNaturalistRootApiUrl}/?lat=${lat}&lng=${lng}&radius=${radius}&order=desc&order_by=created_at`)
+  }
+
+  public getCenter() {
+    return this.center;
   }
 
   public fetchMushroomList$(): Observable<any> {

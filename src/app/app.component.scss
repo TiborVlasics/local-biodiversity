@@ -1,6 +1,7 @@
 .container {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
+    flex-wrap: wrap;
     margin: 16px;
 }
 
@@ -9,7 +10,7 @@ mat-toolbar {
 }
 
 .mushroom-list {
-    width: 900px;
+    min-width: 400px;
 }
 
 mat-toolbar.span {

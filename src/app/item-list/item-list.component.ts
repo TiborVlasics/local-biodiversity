@@ -11,16 +11,14 @@ import { MushroomDataService } from '../services/mushroom-data.service';
 export class ItemListComponent implements OnInit {
 
   observations$!: Observable<any>;
-  latitude = 46.421745;
-  longitude = 16.802555;
   radius = 2.1;
 
   constructor(private service: MushroomDataService) {}
 
   ngOnInit(): void {
     this.observations$ = this.service.getObservationList(
-      this.latitude, 
-      this.longitude, 
+      this.service.getCenter().lat, 
+      this.service.getCenter().lng, 
       this.radius
     ).pipe(
         map((resp: any) => resp.results.map((o: any) => {

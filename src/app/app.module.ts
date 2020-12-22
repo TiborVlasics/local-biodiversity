@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -17,12 +17,15 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MushroomItemComponent } from './mushroom-item/mushroom-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { GoogleMapComponent } from './google-map/google-map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ItemListComponent,
     MushroomItemComponent,
+    GoogleMapComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatCardModule,
     HttpClientModule,
+    HttpClientJsonpModule,
     MatButtonModule,
     MatToolbarModule,
     MatDialogModule,
@@ -38,7 +42,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatIconModule
+    MatIconModule,
+    GoogleMapsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
