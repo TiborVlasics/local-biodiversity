@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 export class MushroomDataService {
   private readonly center: {lat: number, lng: number } = { lat: 46.421745, lng: 16.802555 };
 
-  private mushroomList: BehaviorSubject<any> = new BehaviorSubject(undefined);
+  private observationList: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
   private apiUrl = "http://localhost:3000/api/mushroom";
   private iNaturalistRootApiUrl = "https://api.inaturalist.org/v1/observations";
@@ -17,8 +17,11 @@ export class MushroomDataService {
   constructor(private http: HttpClient) {
   }
 
-  public getObservationList(lat: number, lng: number, radius: number) {
+  public fetchObservationList(lat: number, lng: number, radius: number) {
     return this.http.get(`${this.iNaturalistRootApiUrl}/?lat=${lat}&lng=${lng}&radius=${radius}&order=desc&order_by=created_at`)
+      .pipe(
+        tap((resp: any) => this.observationList.next(resp.results))
+      )
   }
 
   public getCenter() {
@@ -27,7 +30,7 @@ export class MushroomDataService {
 
   public fetchMushroomList$(): Observable<any> {
     return this.http.get(this.apiUrl).pipe(
-      tap(list => this.mushroomList.next(list))
+      tap(list => this.observationList.next(list))
     )
   }
 
@@ -35,13 +38,13 @@ export class MushroomDataService {
     return this.http.post(this.apiUrl, mushroomData);
   }
 
-  public getMushroomList$() {
-    return this.mushroomList.asObservable();
+  public getObservationList$() {
+    return this.observationList.asObservable();
   }
 
   public addMushroom(mushroomData: any) {
-    const list = this.mushroomList.value;
+    const list = this.observationList.value;
     const newList = [...list, mushroomData]
-    this.mushroomList.next(newList);
+    this.observationList.next(newList);
   }
 }

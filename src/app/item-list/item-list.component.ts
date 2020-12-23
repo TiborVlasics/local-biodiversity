@@ -16,7 +16,7 @@ export class ItemListComponent implements OnInit {
   constructor(private service: MushroomDataService) {}
 
   ngOnInit(): void {
-    this.observations$ = this.service.getObservationList(
+    this.observations$ = this.service.fetchObservationList(
       this.service.getCenter().lat, 
       this.service.getCenter().lng, 
       this.radius

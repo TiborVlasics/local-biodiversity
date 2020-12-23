@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -9,7 +9,9 @@ import { MushroomDataService } from '../services/mushroom-data.service';
   templateUrl: './google-map.component.html',
   styleUrls: ['./google-map.component.scss']
 })
-export class GoogleMapComponent implements OnInit {
+export class GoogleMapComponent implements OnInit, AfterViewInit {
+  apiLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  markers$: Observable<any[]> | undefined
 
   readonly mapOptions: google.maps.MapOptions = {
     zoom: 15,
@@ -24,26 +26,52 @@ export class GoogleMapComponent implements OnInit {
       },
       strictBounds: true
     },
+    tilt: 45,
     streetViewControl: false,
     mapTypeId: 'satellite'
   }
-  apiLoaded: Observable<boolean>;
 
   constructor(
     private httpClient: HttpClient,
     private service: MushroomDataService
   ) {
-    this.apiLoaded = httpClient.jsonp(
+    httpClient.jsonp(
       `https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_3kc65-cEuU91fjWnzfBrMQGSLebGhU`,
       'callback'
     ).pipe(
       map(() => true),
       catchError(() => of(false)),
+    ).subscribe(result => {
+      this.apiLoaded.next(result)}
     );
+  }
+  
+  ngAfterViewInit(): void {
+    this.markers$ = this.apiLoaded.pipe(
+      filter(isLoaded => !!isLoaded),
+      switchMap(() => this.service.getObservationList$()),
+      filter(o => !!o),
+      map(result => {
+        return result.map((observation: any) => {
+          const latlng = observation.location.split(',');
+          return {
+            position: { 
+              lat: Number(latlng[0]),
+              lng: Number(latlng[1])
+            },
+            observationId: observation.id
+          };
+        })
+      }),
+    )
   }
 
   ngOnInit(): void {
     this.mapOptions.center = this.service.getCenter();
+  }
+
+  onMarkerClick(event: any, observationId: string) {
+    console.log(observationId);
   }
 
 }
