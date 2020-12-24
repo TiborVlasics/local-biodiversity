@@ -15,17 +15,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MushroomItemComponent } from './mushroom-item/mushroom-item.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { GoogleMapComponent } from './google-map/google-map.component';
+import { ObservationDetailsComponent } from './observation-details/observation-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ItemListComponent,
-    MushroomItemComponent,
     GoogleMapComponent,
+    ObservationDetailsComponent,
   ],
   imports: [
     BrowserModule,

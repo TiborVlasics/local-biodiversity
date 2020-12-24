@@ -51,8 +51,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
       filter(isLoaded => !!isLoaded),
       switchMap(() => this.service.getObservationList$()),
       filter(o => !!o),
-      map(result => {
-        return result.map((observation: any) => {
+      map(results => {
+        return results.map((observation: any) => {
           const latlng = observation.location.split(',');
           return {
             position: { 
@@ -71,7 +71,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   }
 
   onMarkerClick(event: any, observationId: string) {
-    console.log(observationId);
+    this.service.fetchObservationDetails(observationId).subscribe();
   }
 
 }
