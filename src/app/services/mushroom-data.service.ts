@@ -15,8 +15,7 @@ export class MushroomDataService {
 
   private iNaturalistRootApiUrl = "https://api.inaturalist.org/v1/observations";
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   public fetchObservationList(lat: number, lng: number, radius: number) {
     return this.http.get(`${this.iNaturalistRootApiUrl}/?lat=${lat}&lng=${lng}&radius=${radius}&order=desc&order_by=created_at`)

@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatIconModule} from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -43,7 +44,8 @@ import { ObservationDetailsComponent } from './observation-details/observation-d
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatIconModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]

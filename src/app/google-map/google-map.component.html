@@ -1,12 +1,12 @@
-<div *ngIf="apiLoaded | async">
-    <google-map
-      #googleMap
-      height="800px"
-      width="800px"
-      [options]="mapOptions">
-      <map-marker *ngFor="let options of markers$ | async"
-                  [options]="options"
-                  (mapClick)="onMarkerClick($event, options.observationId)">
-      </map-marker>
-    </google-map>
-  </div>
+<div class="map-container" *ngIf="apiLoaded | async">
+  <google-map
+    #googleMap
+    height="800px"
+    width="800px"
+    [options]="mapOptions">
+    <map-marker *ngFor="let options of markers$ | async"
+                [options]="options"
+                (mapClick)="onMarkerClick($event, options.observationId)">
+    </map-marker>
+  </google-map>
+</div>

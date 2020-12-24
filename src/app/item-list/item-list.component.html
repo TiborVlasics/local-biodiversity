@@ -2,13 +2,12 @@
 <h1 class="mat-h2">Legutóbbi megfigyelések</h1>
 <div class="observation-items">
     <div class="observation-item" *ngFor="let item of observations$ | async; index as i">
-        <img class="observation-img" src="{{ item.photos[0].url }}">
         <div class="observation-details mat-typography">
             <p class="mat-body">
-                <span class="mat-body-strong">{{ item.user.name ? item.user.name : 'Ismeretlen felhasználó' }}</span> bejegyzett egy új 
-                <span class="mat-body-strong">{{ item.taxon.name }}</span> egyedet {{ item.place_guess }}!</p>
-            <a class="mat-body" href="{{ item.uri }}">{{ item.uri }}</a>
+            <span class="mat-body-strong">{{ item.user.name ? item.user.name : 'Ismeretlen felhasználó' }}</span> bejegyzett egy új 
+            <a href="{{ item.uri }}"><span class="mat-body-strong">{{ item.taxon.name }}</span></a> egyedet {{ item.place_guess }}!</p>
             <p class="mat-small"><i>{{ item.created_at | date }}</i></p>
         </div>
+        <img class="observation-img" src="{{ item.photos[0].url }}">
     </div>
 </div>

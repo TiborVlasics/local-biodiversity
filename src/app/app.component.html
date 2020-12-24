@@ -1,9 +1,13 @@
-<mat-toolbar>
-  <span>Tótszentmárton species</span>
-</mat-toolbar>
-<div class="container">
-  <!-- <router-outlet></router-outlet> -->
-  <app-google-map></app-google-map>
-  <app-observation-details></app-observation-details>
-  <app-item-list></app-item-list>
-</div>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav opened mode="side" position="end">
+    <router-outlet></router-outlet>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <span>Tótszentmárton species</span>
+    </mat-toolbar>
+    <div class="container">
+      <app-google-map></app-google-map>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

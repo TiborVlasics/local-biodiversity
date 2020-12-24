@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
@@ -33,7 +34,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
   constructor(
     private httpClient: HttpClient,
-    private service: MushroomDataService
+    private service: MushroomDataService,
+    private router: Router
   ) {
     httpClient.jsonp(
       `https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_3kc65-cEuU91fjWnzfBrMQGSLebGhU`,
@@ -71,7 +73,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   }
 
   onMarkerClick(event: any, observationId: string) {
-    this.service.fetchObservationDetails(observationId).subscribe();
+    // this.service.fetchObservationDetails(observationId).subscribe();
+    this.router.navigate(['observations', observationId], { replaceUrl: true })
   }
 
 }
