@@ -27,10 +27,16 @@ export class MushroomDataService {
   }
 
   public fetchObservationDetails(observationId: string) {
+    this.isLoading.next(true);
     return this.http.get(`${this.iNaturalistRootApiUrl}/${observationId}`)
       .pipe(
         map((resp: any) => resp.results[0]),
-        tap((resp: any) => this.selectedObservation.next(resp))
+        tap((resp: any) => {
+          this.selectedObservation.next(resp);
+          this.isLoading.next(false);
+        }, () => {
+          this.isLoading.next(false);
+        })
       );
   }
 

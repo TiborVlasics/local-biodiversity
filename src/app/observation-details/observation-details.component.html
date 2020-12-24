@@ -1,6 +1,16 @@
-<button mat-raised-button color="primary" (click)="backToList()">Back</button>
-<div *ngIf="(selectedObservation$ | async) as observation">
-    <h2>{{ observation.species_guess }}</h2>
-    <img src="{{ observation.imgUrl }}" alt="">
-    <p>{{ observation.created_at | date }}</p>
+<button mat-raised-button (click)="backToList()" class="sidebar-back">Back</button>
+<div class="observation-details-container">
+    <ng-container *ngIf="!(isLoading | async); else spinner" >
+        <div *ngIf="(selectedObservation$ | async) as observation" class="observation-details">
+            <h2>{{ observation.species_guess }}</h2>
+            <img src="{{ observation.imgUrl }}" alt="">
+            <p>{{ observation.created_at | date }}</p>
+        </div>
+    </ng-container>
 </div>
+
+<ng-template #spinner>
+    <mat-spinner
+        class="example-margin">
+    </mat-spinner>
+</ng-template>

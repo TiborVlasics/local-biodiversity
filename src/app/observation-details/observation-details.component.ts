@@ -20,21 +20,18 @@ export class ObservationDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isLoading = this.service.isLoading$();
+    this.isLoading = this.service.isLoading$().pipe(tap(a => console.log(a)));
   
     this.route.params.pipe(
-      tap(() => this.service.setLoading(true)),
       switchMap(params => this.service.fetchObservationDetails(params.id))
     ).subscribe();
 
     this.selectedObservation$ = this.service.getSelectedObservation$().pipe(
       filter(o => !!o),
-      tap(() => this.service.setLoading(false)),
       map((observation: any) => {
         const image = observation.photos[0].url.replace('square', 'medium')
         return ({ ...observation, imgUrl: image });
       }),
-      tap(a => console.log(a))
     )
   }
 
