@@ -1,22 +1,23 @@
-import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { MushroomDataService } from './services/mushroom-data.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'mushroom-repository';
+  radius = 2.1;
 
-  isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
+  constructor(private service: MushroomDataService) { }
 
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private dialog: MatDialog
-  ) { }
+  ngOnInit(): void {
+    this.service.fetchObservationList(
+      this.service.getCenter().lat, 
+      this.service.getCenter().lng, 
+      this.radius
+    ).subscribe();
+  }
 
 }
-

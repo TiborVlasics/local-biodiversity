@@ -15,6 +15,8 @@ export class MushroomDataService {
 
   private iNaturalistRootApiUrl = "https://api.inaturalist.org/v1/observations";
 
+  private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(private http: HttpClient) { }
 
   public fetchObservationList(lat: number, lng: number, radius: number) {
@@ -42,5 +44,13 @@ export class MushroomDataService {
 
   public getObservationList$() {
     return this.observationList.asObservable();
+  }
+
+  public setLoading(isLoading: boolean) {
+    this.isLoading.next(isLoading);
+  }
+
+  public isLoading$() {
+    return this.isLoading.asObservable();
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -11,28 +11,24 @@ import { MushroomDataService } from '../services/mushroom-data.service';
 export class ItemListComponent implements OnInit {
 
   observations$!: Observable<any>;
-  radius = 2.1;
 
   constructor(private service: MushroomDataService) {}
 
   ngOnInit(): void {
-    this.observations$ = this.service.fetchObservationList(
-      this.service.getCenter().lat, 
-      this.service.getCenter().lng, 
-      this.radius
-    ).pipe(
-        map((resp: any) => resp.results.map((o: any) => {
-          if (o.place_guess.includes("Kálmán hegy")) {
-            return { ...o, place_guess: 'a Kálmán hegyen' };
-          } else if (o.place_guess.includes("Tótszentmárton")) {
-            return { ...o, place_guess: 'Tótszentmártonban' };
-          } else if (o.place_guess.includes("Becsehely")) {
-            return { ...o, place_guess: 'Becsehely felé' };
-          } else {
-            return o;
-          }
-        })),
-      )
+    this.observations$ = this.service.getObservationList$().pipe(
+      filter(r => !!r),
+      map((results: any) => results.map((o: any) => {
+        if (o.place_guess.includes("Kálmán hegy")) {
+          return { ...o, place_guess: 'a Kálmán hegyen' };
+        } else if (o.place_guess.includes("Tótszentmárton")) {
+          return { ...o, place_guess: 'Tótszentmártonban' };
+        } else if (o.place_guess.includes("Becsehely")) {
+          return { ...o, place_guess: 'Becsehely felé' };
+        } else {
+          return o;
+        }
+      })),
+    )
   }
 
 }

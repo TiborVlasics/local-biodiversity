@@ -1,1 +1,6 @@
-<p>observation-details works!</p>
+<button mat-raised-button color="primary" (click)="backToList()">Back</button>
+<div *ngIf="(selectedObservation$ | async) as observation">
+    <h2>{{ observation.species_guess }}</h2>
+    <img src="{{ observation.imgUrl }}" alt="">
+    <p>{{ observation.created_at | date }}</p>
+</div>
