@@ -1,7 +1,8 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -16,20 +17,25 @@ export class ObservationDetailsComponent implements OnInit {
   constructor(
     private service: MushroomDataService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private breakpointObserver: BreakpointObserver,
   ) { }
 
   ngOnInit(): void {
-    this.isLoading = this.service.isLoading$().pipe(tap(a => console.log(a)));
+    this.isLoading = this.service.isLoading$();
   
     this.route.params.pipe(
       switchMap(params => this.service.fetchObservationDetails(params.id))
     ).subscribe();
 
-    this.selectedObservation$ = this.service.getSelectedObservation$().pipe(
-      filter(o => !!o),
-      map((observation: any) => {
-        const image = observation.photos[0].url.replace('square', 'medium')
+    this.selectedObservation$ = combineLatest([
+      this.service.getSelectedObservation$(),
+      this.breakpointObserver.observe(Breakpoints.XSmall)
+    ]).pipe(
+      filter(([observation]) => !!observation),
+      map(([observation, breakPoint]) => {
+        const imageSize = breakPoint.matches ? 'small' : 'medium';
+        const image = observation.photos[0].url.replace('square', imageSize)
         return ({ ...observation, imgUrl: image });
       }),
     )

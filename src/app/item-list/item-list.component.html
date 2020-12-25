@@ -6,7 +6,7 @@
             <div class="observation-details mat-typography">
                 <p class="mat-body">
                 <span class="mat-body-strong">{{ item.user.name ? item.user.name : 'Ismeretlen felhasználó' }}</span> bejegyzett egy új 
-                <a href="{{ item.uri }}"><span class="mat-body-strong">{{ item.taxon.name }}</span></a> egyedet {{ item.place_guess }}!</p>
+                <span class="mat-body-strong">{{ item.taxon.name }}</span> egyedet {{ item.place_guess }}!</p>
                 <p class="mat-small"><i>{{ item.created_at | date }}</i></p>
             </div>
             <img class="observation-img" src="{{ item.photos[0].url }}">

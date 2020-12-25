@@ -1,18 +1,18 @@
-button {
-    width: 100%;
-}
-
 img {
-    width: 100%;
+    object-fit: cover;
 }
 
 .observation-details-container {
     display: flex;
     justify-content: center;
-    min-height: 500px;
-    align-items: center;
 
     .observation-details {
-        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
+}
+
+.navbar-tools {
+ padding: 8px;
 }

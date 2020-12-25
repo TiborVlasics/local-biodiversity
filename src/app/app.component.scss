@@ -31,6 +31,11 @@ mat-toolbar.span {
     right: 0;
 }
 
+@media only screen and (max-width: 600px) {
+    mat-sidenav {
+        width: 100%;
+    }
+}
 mat-sidenav {
     min-width: 320px;
 }

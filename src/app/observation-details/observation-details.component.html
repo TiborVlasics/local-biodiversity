@@ -1,10 +1,14 @@
-<button mat-raised-button color="primary" (click)="backToList()" class="sidebar-back">Back</button>
+<div class="navbar-tools">
+    <button mat-icon-button color="primary" (click)="backToList()" aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+</div>
 <div class="observation-details-container">
     <ng-container *ngIf="!(isLoading | async); else spinner" >
         <div *ngIf="(selectedObservation$ | async) as observation" class="observation-details">
-            <h2>{{ observation.taxon.name }}</h2>
+            <h2 class="mat-h2">{{ observation.taxon.name }}</h2>
             <img src="{{ observation.imgUrl }}" alt="">
-            <p>{{ observation.created_at | date }}</p>
+            <p class="mat-body">{{ observation.created_at | date }}</p>
         </div>
     </ng-container>
 </div>

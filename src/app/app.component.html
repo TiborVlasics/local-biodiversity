@@ -1,12 +1,9 @@
-<mat-sidenav-container class="example-container" autosize="true">
-  <mat-sidenav opened mode="side" position="end">
+<mat-sidenav-container class="example-container" [autosize]="autosize" [hasBackdrop]="hasBackdrop">
+  <mat-sidenav opened [mode]="mode" [position]="position" [disableClose]="disableClose" [fixedInViewport]="fixedInViewport" [fixedTopGap]="fixedTopGap">
     <router-outlet></router-outlet>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="container">
-      <!-- <mat-toolbar>
-        <span>Tótszentmárton species</span>
-      </mat-toolbar> -->
       <div class="map-container">
         <app-google-map></app-google-map>
       </div>
