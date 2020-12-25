@@ -73,7 +73,6 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   }
 
   onMarkerClick(event: any, observationId: string) {
-    // this.service.fetchObservationDetails(observationId).subscribe();
     this.router.navigate(['observations', observationId], { replaceUrl: true })
   }
 
