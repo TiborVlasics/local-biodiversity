@@ -10,7 +10,6 @@ import { MushroomDataService } from './services/mushroom-data.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Local-biodiversity';
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
   radius = 2.1;
 
