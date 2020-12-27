@@ -11,8 +11,6 @@ import { MushroomDataService } from './services/mushroom-data.service';
 })
 export class AppComponent implements OnInit {
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
-  radius = 2.1;
-
   hasBackdrop = false;
   autosize = true;
   mode = 'side' as MatDrawerMode;
@@ -27,11 +25,8 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.service.fetchObservationList(
-      this.service.getCenter().lat, 
-      this.service.getCenter().lng, 
-      this.radius
-    ).subscribe();
+    this.service.fetchObservationListRect(this.service.places['totszentmarton'])
+      .subscribe();
 
     this.isExtraSmall.subscribe(result => {
       if(result.matches) {
