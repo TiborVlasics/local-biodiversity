@@ -1,8 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, distinctUntilChanged, filter, map, switchMap, take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -10,8 +9,9 @@ import { MushroomDataService } from '../services/mushroom-data.service';
   templateUrl: './google-map.component.html',
   styleUrls: ['./google-map.component.scss']
 })
-export class GoogleMapComponent implements OnInit, AfterViewInit {
-  apiLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+export class GoogleMapComponent implements OnInit, OnDestroy {
+  notifier = new Subject()
+  apiLoaded: Observable<boolean> | undefined;
   markers$: Observable<any[]> | undefined
 
   mapOptions: google.maps.MapOptions = {
@@ -33,24 +33,31 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   }
 
   constructor(
-    private httpClient: HttpClient,
     private service: MushroomDataService,
     private router: Router,
     private route: ActivatedRoute
   ) {
-    httpClient.jsonp(
-      `https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_3kc65-cEuU91fjWnzfBrMQGSLebGhU`,
-      'callback'
-    ).pipe(
-      map(() => true),
-      catchError(() => of(false)),
-    ).subscribe(result => {
-      this.apiLoaded.next(result)}
-    );
+    this.apiLoaded = this.service.isGoogleApiLoaded$();
   }
-  
-  ngAfterViewInit(): void {
-    this.markers$ = this.apiLoaded.pipe(
+
+  ngOnInit(): void {
+    this.mapOptions.center = this.service.getCenter();
+    this.service.getSelectedRegion$().pipe(
+      takeUntil(this.notifier),
+      filter(region => !!region),
+      distinctUntilChanged()
+    ).subscribe(region => {
+      this.mapOptions = {
+        ...this.mapOptions,
+        restriction: {
+          ...this.mapOptions.restriction,
+          latLngBounds: <google.maps.LatLngBoundsLiteral>region.latLngBounds
+        }
+      };
+    });
+
+    this.markers$ = this.service.isGoogleApiLoaded$().pipe(
+      takeUntil(this.notifier),
       filter(isLoaded => !!isLoaded),
       switchMap(() => this.service.getObservationList$()),
       filter(o => !!o),
@@ -69,23 +76,13 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
     )
   }
 
-  ngOnInit(): void {
-    this.mapOptions.center = this.service.getCenter();
-    this.service.getSelectedRegion$().pipe(
-      filter(region => !!region),
-      distinctUntilChanged()
-    ).subscribe(region => {
-      this.mapOptions = {
-        ...this.mapOptions,
-        restriction: {
-          ...this.mapOptions.restriction,
-          latLngBounds: <google.maps.LatLngBoundsLiteral>region.latLngBounds
-        }
-      };
-    });
+  ngOnDestroy(): void {
+    this.notifier.next()
+    this.notifier.complete()
   }
 
-  onMarkerClick(event: any, observationId: string) {
+  onMarkerClickevet(observationId: string) {
+    console.log(observationId)
     this.route.firstChild?.paramMap.pipe(
       take(1)
     ).subscribe(paramMap => {

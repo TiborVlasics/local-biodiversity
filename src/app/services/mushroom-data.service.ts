@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { MapBoundingBox } from '../interfaces/MapBoundingBox.interface';
 import { Region } from '../interfaces/region.interface';
 
@@ -46,11 +46,14 @@ export class MushroomDataService {
 
   private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
+  private googleApiLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private route: ActivatedRoute
-  ) { 
+  ) {
+    this.loadGoogleApi$().subscribe(result => this.googleApiLoaded.next(result));
     this.setRegionOnNavigation$().subscribe();
     this.loadObservations$().subscribe();
   }
@@ -112,6 +115,10 @@ export class MushroomDataService {
     this.isLoading.next(isLoading);
   }
 
+  public isGoogleApiLoaded$(): Observable<boolean> {
+    return this.googleApiLoaded.asObservable();
+  }
+
   private setRegionOnNavigation$() {
     return this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -135,6 +142,16 @@ export class MushroomDataService {
           ? this.observationList.next(results)
           : this.observationList.next([])
       )
+    )
+  }
+
+  private loadGoogleApi$() {
+    return this.http.jsonp(
+      `https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_3kc65-cEuU91fjWnzfBrMQGSLebGhU`,
+      'callback'
+    ).pipe(
+      map(() => true),
+      catchError(() => of(false))
     )
   }
 

@@ -6,7 +6,7 @@
     [options]="mapOptions">
     <map-marker *ngFor="let options of markers$ | async"
                 [options]="options"
-                (mapClick)="onMarkerClick($event, options.observationId)">
+                (mapClick)="onMarkerClick(options.observationId)">
     </map-marker>
   </google-map>
 </div>
