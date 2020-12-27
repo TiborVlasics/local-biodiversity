@@ -1,6 +1,7 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { MatDrawerMode } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MushroomDataService } from './services/mushroom-data.service';
 
@@ -11,6 +12,8 @@ import { MushroomDataService } from './services/mushroom-data.service';
 })
 export class AppComponent implements OnInit {
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
+  selectedPlace$: Observable<any> | undefined;
+
   hasBackdrop = false;
   autosize = true;
   mode = 'side' as MatDrawerMode;
@@ -21,12 +24,12 @@ export class AppComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private service: MushroomDataService
+    private service: MushroomDataService,
+    private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
-    this.service.fetchObservationListRect(this.service.places['totszentmarton'])
-      .subscribe();
+  ngOnInit(): void {    
+    this.selectedPlace$ = this.service.getSelectedRegion$();
 
     this.isExtraSmall.subscribe(result => {
       if(result.matches) {

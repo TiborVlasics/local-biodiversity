@@ -6,7 +6,7 @@
 <div class="observation-details-container">
     <ng-container *ngIf="!(isLoading | async); else spinner" >
         <div *ngIf="(selectedObservation$ | async) as observation" class="observation-details">
-            <h2 class="mat-h2">{{ observation.taxon.name }}</h2>
+            <h2 class="mat-h2">{{ observation?.taxon?.name }}</h2>
             <img src="{{ observation.imgUrl }}" alt="">
             <p class="mat-body">{{ observation.created_at | date }}</p>
         </div>

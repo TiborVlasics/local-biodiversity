@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { ObservationDetailsComponent } from './observation-details/observation-details.component';
+import { PlaceListComponent } from './place-list/place-list.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { ObservationDetailsComponent } from './observation-details/observation-d
     ItemListComponent,
     GoogleMapComponent,
     ObservationDetailsComponent,
+    PlaceListComponent,
   ],
   imports: [
     BrowserModule,

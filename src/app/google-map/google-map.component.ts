@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, switchMap, take } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   apiLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   markers$: Observable<any[]> | undefined
 
-  readonly mapOptions: google.maps.MapOptions = {
+  mapOptions: google.maps.MapOptions = {
     zoom: 15,
     minZoom: 15,
     controlSize: 24,
@@ -35,7 +35,8 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
   constructor(
     private httpClient: HttpClient,
     private service: MushroomDataService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     httpClient.jsonp(
       `https://maps.googleapis.com/maps/api/js?key=AIzaSyDn_3kc65-cEuU91fjWnzfBrMQGSLebGhU`,
@@ -70,10 +71,32 @@ export class GoogleMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.mapOptions.center = this.service.getCenter();
+    this.service.getSelectedRegion$().pipe(
+      filter(region => !!region),
+      distinctUntilChanged()
+    ).subscribe(region => {
+      this.mapOptions = {
+        ...this.mapOptions,
+        restriction: {
+          ...this.mapOptions.restriction,
+          latLngBounds: <google.maps.LatLngBoundsLiteral>region.latLngBounds
+        }
+      };
+    });
   }
 
   onMarkerClick(event: any, observationId: string) {
-    this.router.navigate(['observations', observationId], { replaceUrl: true })
+    this.route.firstChild?.paramMap.pipe(
+      take(1)
+    ).subscribe(paramMap => {
+      this.router.navigate([
+        'regions',
+        paramMap.get('regionId'),
+        'observations', observationId
+      ], { 
+        replaceUrl: true 
+      });
+    })
   }
 
 }

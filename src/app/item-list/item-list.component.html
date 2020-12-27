@@ -1,4 +1,8 @@
-
+<div class="navbar-tools">
+    <button mat-icon-button color="primary" (click)="backToRegions()" aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+</div>
 <div class="observation-list">
     <h1 class="mat-h2">Legutóbbi megfigyelések</h1>
     <div class="observation-items">
@@ -6,7 +10,7 @@
             <div class="observation-details mat-typography">
                 <p class="mat-body">
                 <span class="mat-body-strong">{{ item.user.name ? item.user.name : 'Ismeretlen felhasználó' }}</span> bejegyzett egy új 
-                <span class="mat-body-strong">{{ item.taxon.name }}</span> egyedet {{ item.place_guess }}!</p>
+                <span class="mat-body-strong">{{ item?.taxon?.name }}</span> egyedet.</p>
                 <p class="mat-small"><i>{{ item.created_at | date }}</i></p>
             </div>
             <img class="observation-img" src="{{ item.photos[0].url }}">

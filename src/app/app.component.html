@@ -5,7 +5,7 @@
   <mat-sidenav-content>
     <div class="container">
       <div class="map-container">
-        <app-google-map></app-google-map>
+        <app-google-map *ngIf="selectedPlace$ | async"></app-google-map>
       </div>
     </div>
   </mat-sidenav-content>

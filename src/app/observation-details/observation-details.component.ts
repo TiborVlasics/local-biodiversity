@@ -25,7 +25,7 @@ export class ObservationDetailsComponent implements OnInit {
     this.isLoading = this.service.isLoading$();
   
     this.route.params.pipe(
-      switchMap(params => this.service.fetchObservationDetails(params.id))
+      switchMap(params => this.service.fetchObservationDetails(params.observationId))
     ).subscribe();
 
     this.selectedObservation$ = combineLatest([

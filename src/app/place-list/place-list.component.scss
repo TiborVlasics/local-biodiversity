@@ -1,0 +1,21 @@
+.region-list {
+    margin: 4px;
+}
+
+.region-item {
+    display: flex;
+    align-items: center;
+    margin: 4px;
+    padding-left: 4px;
+    img {
+        width: 150px;
+        object-fit: contain;
+        margin: 8px;
+    }
+
+    &:hover {
+        outline: 1px solid #555555;
+        cursor: pointer;
+        background-color: #333333;
+    }
+}
