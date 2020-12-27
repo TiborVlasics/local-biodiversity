@@ -81,8 +81,7 @@ export class GoogleMapComponent implements OnInit, OnDestroy {
     this.notifier.complete()
   }
 
-  onMarkerClickevet(observationId: string) {
-    console.log(observationId)
+  onMarkerClick(observationId: string) {
     this.route.firstChild?.paramMap.pipe(
       take(1)
     ).subscribe(paramMap => {
