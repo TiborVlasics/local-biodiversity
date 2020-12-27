@@ -1,5 +1,5 @@
 <div class="region-list">
-    <h2>Válassz területet:</h2>
+    <h2 class="mat-h2">Válassz területet:</h2>
     <div class="region-item" *ngFor="let item of regions | async | keyvalue; index as i" (click)="selectRegion(item.value.id)">
         <p>{{ item.value.name }}</p>
         <img src="{{ item.value.imageUrl }}" alt="">
