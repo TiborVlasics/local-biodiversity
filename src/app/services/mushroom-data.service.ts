@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { MapBoundingBox } from '../interfaces/MapBoundingBox.interface';
 import { Region } from '../interfaces/region.interface';
 
@@ -135,6 +135,7 @@ export class MushroomDataService {
 
   private loadObservations$(): Observable<any> {
     return this.getSelectedRegion$().pipe(
+      distinctUntilChanged(),
       switchMap((region: Region) => region 
           ? this.fetchObservationListRect(region.latLngBounds)
           : of(undefined)),
