@@ -1,7 +1,6 @@
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
-import { MatDrawerMode } from '@angular/material/sidenav';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
 import { MushroomDataService } from './services/mushroom-data.service';
 
@@ -10,14 +9,15 @@ import { MushroomDataService } from './services/mushroom-data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   isExtraSmall: Observable<BreakpointState> = this.breakpointObserver.observe(Breakpoints.XSmall);
   selectedPlace$: Observable<any> | undefined;
+  @ViewChild(MatSidenav) sidenav!: MatSidenav;
 
   hasBackdrop = false;
   autosize = true;
   mode = 'side' as MatDrawerMode;
-  position = 'end' as 'start' | 'end';
+  position = 'start' as 'start' | 'end';
   fixedInViewport = false;
   fixedTopGap = 0;
   disableClose = true;
@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private service: MushroomDataService,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {    
@@ -36,7 +35,7 @@ export class AppComponent implements OnInit {
         this.mode = 'over';
         this.autosize = false;
         this.fixedInViewport = true;
-        this.fixedTopGap = window.innerHeight / 4 * 3;
+        this.fixedTopGap = window.innerHeight / 6 * 3;
       } else {
         this.mode = 'side';
         this.autosize = true;
@@ -45,5 +44,12 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  ngAfterViewInit(): void {
+    this.selectedPlace$?.subscribe(region => {
+      region ? this.sidenav.open() : this.sidenav.close()
+    })
+  }
+
 
 }

@@ -1,7 +1,7 @@
 .observation-items {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    justify-content: space-between;
 }
 
 .observation-item {
@@ -10,7 +10,8 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
-    max-width: 500px;
+    width: 400px;
+    margin: 4px;
 
     img {
         object-fit: contain;
@@ -31,6 +32,7 @@
     }
 }
 
-.observation-list {
+.observation-list-wrapper {
+    margin: 8px;
     padding: 16px;
 }

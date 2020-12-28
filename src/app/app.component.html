@@ -1,12 +1,10 @@
 <mat-sidenav-container class="example-container" [autosize]="autosize" [hasBackdrop]="hasBackdrop">
-  <mat-sidenav opened [mode]="mode" [position]="position" [disableClose]="disableClose" [fixedInViewport]="fixedInViewport" [fixedTopGap]="fixedTopGap">
-    <router-outlet></router-outlet>
+  <mat-sidenav #sidenav [mode]="mode" [position]="position" [disableClose]="disableClose" [fixedInViewport]="fixedInViewport" [fixedTopGap]="fixedTopGap">
+    <app-google-map *ngIf="selectedPlace$ | async"></app-google-map>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="container">
-      <div class="map-container">
-        <app-google-map *ngIf="selectedPlace$ | async"></app-google-map>
-      </div>
+        <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
