@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -29,4 +29,18 @@ export class ItemListComponent implements OnInit {
     this.router.navigate(['../..'], { relativeTo: this.route });
   }
 
+  selectItem(observationId: string) {
+    this.route.paramMap.pipe(
+      take(1)
+    ).subscribe(paramMap => {
+      this.router.navigate([
+        'regions',
+        paramMap.get('regionId'),
+        'observations', 
+        observationId
+      ], { 
+        replaceUrl: true 
+      });
+    })
+  }
 }

@@ -6,7 +6,7 @@
 <div class="observation-list-wrapper">
     <h2 class="mat-h2">Legutóbbi megfigyelések</h2>
     <div class="observation-items">
-        <div class="observation-item" *ngFor="let item of observations$ | async; index as i">
+        <div class="observation-item" *ngFor="let item of observations$ | async; index as i" (click)="selectItem(item.id)">
             <div class="observation-details mat-typography">
                 <p class="mat-body">
                 <span class="mat-body-strong">{{ item.user.name ? item.user.name : 'Ismeretlen felhasználó' }}</span> bejegyzett egy új 
