@@ -1,0 +1,12 @@
+<div class="species-list">
+    <div class="species-item" *ngFor="let item of species$ | async">
+        <div class="species-item__upper">
+            <h2>{{ item.taxon.name }}</h2>
+            <h3>{{ item.taxon.preferred_common_name }}</h3>
+            <p>Megfigyelések száma: {{ item.count }}</p>
+        </div>
+        <div class="species-item__lower">
+            <img src="{{ item.taxon.default_photo.medium_url }}" alt="">
+        </div>
+    </div>
+</div>

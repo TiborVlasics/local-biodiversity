@@ -44,6 +44,10 @@ export class MushroomDataService {
 
   private selectedRegion: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
+  private taxonList: BehaviorSubject<any> = new BehaviorSubject(undefined);
+
+  private selectedTaxon: BehaviorSubject<any> = new BehaviorSubject(undefined);
+
   private isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   private googleApiLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -56,6 +60,7 @@ export class MushroomDataService {
     this.loadGoogleApi$().subscribe(result => this.googleApiLoaded.next(result));
     this.setRegionOnNavigation$().subscribe();
     this.loadObservations$().subscribe();
+    this.loadTaxonList$().subscribe();
   }
 
   public fetchObservationList(lat: number, lng: number, radius: number) {
@@ -66,11 +71,22 @@ export class MushroomDataService {
       );
   }
 
-  public fetchObservationListRect(coords: MapBoundingBox) {
-    return this.http.get(`${this.iNaturalistRootApiUrl}?nelat=${coords.north}&nelng=${coords.east}&swlat=${coords.south}&swlng=${coords.west}&order=desc&order_by=created_at`)
+  public fetchObservationListRect(latLngBounds: MapBoundingBox) {
+    return this.http.get(`${this.iNaturalistRootApiUrl}?nelat=${latLngBounds.north}&nelng=${latLngBounds.east}&swlat=${latLngBounds.south}&swlng=${latLngBounds.west}&order=desc&order_by=created_at`)
     .pipe(
       map((resp: any) => resp.results)
     );
+  }
+
+  public fetchObservationListRectByTaxon(latLngBounds: MapBoundingBox, taxonId: string) {
+    return this.http.get(`${this.iNaturalistRootApiUrl}?taxon_id=${taxonId}&nelat=${latLngBounds.north}&nelng=${latLngBounds.east}&swlat=${latLngBounds.south}&swlng=${latLngBounds.west}&order=desc&order_by=created_at`)
+    .pipe(
+      map((resp: any) => resp.results)
+    );
+  }
+
+  public fetchTaxonList(latLngBounds: MapBoundingBox) {
+    return this.http.get(`${this.iNaturalistRootApiUrl}/species_counts?nelat=${latLngBounds.north}&nelng=${latLngBounds.east}&swlat=${latLngBounds.south}&swlng=${latLngBounds.west}`);
   }
 
   public fetchObservationDetails(observationId: string) {
@@ -105,6 +121,24 @@ export class MushroomDataService {
 
   public getObservationList$() {
     return this.observationList.asObservable();
+  }
+
+  public getTaxons$(): Observable<any> {
+    return this.taxonList.asObservable();
+  }
+
+  private loadTaxonList$(): Observable<any> {
+    return this.getSelectedRegion$().pipe(
+      distinctUntilChanged(),
+      switchMap((region: Region) => region 
+          ? this.fetchTaxonList(region.latLngBounds)
+          : of(undefined)),
+      tap(results => {
+        results
+          ? this.taxonList.next(results)
+          : this.taxonList.next([]);
+      })
+    )
   }
   
   public isLoading$() {
