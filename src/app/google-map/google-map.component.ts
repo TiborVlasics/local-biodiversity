@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { GoogleMap } from '@angular/google-maps';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { MushroomDataService } from '../services/mushroom-data.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class GoogleMapComponent implements OnInit, OnDestroy {
   notifier = new Subject()
   apiLoaded: Observable<boolean> | undefined;
   markers$: Observable<any[]> | undefined
+  @ViewChild(GoogleMap) googleMap!: GoogleMap;
 
   mapOptions: google.maps.MapOptions = {
     zoom: 15,
@@ -41,7 +43,6 @@ export class GoogleMapComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.mapOptions.center = this.service.getCenter();
     this.service.getSelectedRegion$().pipe(
       takeUntil(this.notifier),
       filter(region => !!region),
@@ -73,6 +74,9 @@ export class GoogleMapComponent implements OnInit, OnDestroy {
           };
         })
       }),
+      tap(markers => { 
+        if (markers && markers[0]) this.googleMap.panTo(markers[0].position) 
+      })
     )
   }
 

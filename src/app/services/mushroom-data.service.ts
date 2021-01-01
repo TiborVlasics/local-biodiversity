@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { catchError, distinctUntilChanged, filter, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { MapBoundingBox } from '../interfaces/MapBoundingBox.interface';
 import { Region } from '../interfaces/region.interface';
 
@@ -61,6 +61,7 @@ export class MushroomDataService {
     this.setRegionOnNavigation$().subscribe();
     this.loadObservations$().subscribe();
     this.loadTaxonList$().subscribe();
+    this.selectedTaxon.subscribe()
   }
 
   public fetchObservationList(lat: number, lng: number, radius: number) {
@@ -123,6 +124,10 @@ export class MushroomDataService {
     return this.observationList.asObservable();
   }
 
+  public getSelectedTaxonId$() {
+    return this.selectedTaxon.asObservable();
+  }
+
   public getTaxons$(): Observable<any> {
     return this.taxonList.asObservable();
   }
@@ -163,16 +168,26 @@ export class MushroomDataService {
         } else {
           this.selectedRegion.next(undefined);
         }
+        if(params.taxonId) {
+          this.selectedTaxon.next(params.taxonId)
+        } else {
+          this.selectedTaxon.next(undefined);
+        }
       })
     )
   }
 
   private loadObservations$(): Observable<any> {
-    return this.getSelectedRegion$().pipe(
-      distinctUntilChanged(),
-      switchMap((region: Region) => region 
-          ? this.fetchObservationListRect(region.latLngBounds)
-          : of(undefined)),
+    return combineLatest([
+      this.getSelectedRegion$(),
+      this.selectedTaxon
+    ]).pipe(
+      switchMap(([region, taxonId]: [Region, string]) => {
+        if(taxonId) {
+          return this.fetchObservationListRectByTaxon(region.latLngBounds, taxonId);
+        } 
+        return of(undefined);
+      }),
       tap(results => results 
           ? this.observationList.next(results)
           : this.observationList.next([])

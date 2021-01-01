@@ -42,7 +42,7 @@ export class ObservationDetailsComponent implements OnInit {
   }
 
   backToList() {
-    this.router.navigate(['../'], {relativeTo: this.route});
+    this.router.navigate(['../../'], {relativeTo: this.route});
   }
 
 }

@@ -15,6 +15,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { GoogleMapComponent } from './google-map/google-map.component';
 import { ObservationDetailsComponent } from './observation-details/observation-details.component';
 import { PlaceListComponent } from './place-list/place-list.component';
+import { SpeciesListComponent } from './species-list/species-list.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { PlaceListComponent } from './place-list/place-list.component';
     GoogleMapComponent,
     ObservationDetailsComponent,
     PlaceListComponent,
+    SpeciesListComponent,
   ],
   imports: [
     BrowserModule,

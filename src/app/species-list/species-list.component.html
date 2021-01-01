@@ -1,5 +1,10 @@
+<div class="navbar-tools">
+    <button mat-icon-button color="primary" (click)="backToRegions()" aria-label="Example icon button with a vertical three dot icon">
+        <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+</div>
 <div class="species-list">
-    <div class="species-item" *ngFor="let item of species$ | async">
+    <div class="species-item" *ngFor="let item of species$ | async" (click)="selectItem(item.taxon.id)">
         <div class="species-item__upper">
             <h2>{{ item.taxon.name }}</h2>
             <h3>{{ item.taxon.preferred_common_name }}</h3>

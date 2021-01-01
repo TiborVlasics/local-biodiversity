@@ -46,8 +46,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.selectedPlace$?.subscribe(region => {
-      region ? this.sidenav.open() : this.sidenav.close()
+    this.service.getSelectedTaxonId$().subscribe(taxon => {
+      taxon ? this.sidenav.open() : this.sidenav.close()
     })
   }
 
